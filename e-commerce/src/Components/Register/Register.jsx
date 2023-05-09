@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Register.module.css';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
-
-    function register(values) {
+    let navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    async function register(values) {
         console.log(values);
+        setIsLoading(true);
+        setError(null);
+        let { data } = await axios.post('https://route-ecommerce.onrender.com/api/v1/auth/signup', values).catch((error) => {
+            // error
+            setError(error.response.data.message);
+            setIsLoading(false);
+        });
+
+        if (data.message === 'success') {
+            // navigate to login page
+            setIsLoading(false);
+            navigate('/login');
+        }
     }
+
     // input validation
     function validate(values) {
         let errors = {};
@@ -46,7 +64,6 @@ export default function Register() {
         return errors;
     }
 
-
     let formik = useFormik({
         initialValues: {
             name: '',
@@ -62,8 +79,8 @@ export default function Register() {
         <>
             <div className="container my-5">
                 <h3>Register Now :</h3>
-
-                <form className='w-75 mx-auto' onSubmit={formik.handleSubmit}>
+                {error ? <div className='alert alert-danger'>{error}</div> : ""}
+                <form className='mx-auto' onSubmit={formik.handleSubmit}>
                     <label htmlFor="name">Name</label>
                     <input type="text" className='form-control mb-2' id='name' name='name' value={formik.values.name} onBlur={formik.handleBlur} onChange={formik.handleChange} />
                     {formik.errors.name && formik.touched.name ? <div className="alert alert-danger">{formik.errors.name}</div> : ""}
@@ -84,8 +101,10 @@ export default function Register() {
                     <input type="tel" className='form-control mb-2' name='phone' id='phone' value={formik.values.phone} onBlur={formik.handleBlur} onChange={formik.handleChange} />
                     {formik.errors.phone && formik.touched.phone ? <div className="alert alert-danger">{formik.errors.phone}</div> : ""}
 
-                    <button className='btn bg-main text-white'>Register</button>
+                    {isLoading ? <button className='btn bg-main text-white'> <i className='fa fa-spin fa-spinner px-2'></i> </button> : <button disabled={!(formik.isValid && formik.dirty)} type='submit' className='btn bg-main text-white'> {isLoading ? <i className='fa fa-spin fa-spinner'></i> : 'Register'} </button>}
+
                 </form >
+
             </div >
         </>
     );
