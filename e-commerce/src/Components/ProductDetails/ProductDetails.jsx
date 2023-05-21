@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './ProductDetails.module.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Slider from 'react-slick';
@@ -12,34 +11,29 @@ export default function ProductDetails() {
     const [product, setProduct] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     let { id } = useParams();
-    // console.log(id);
 
     async function getProduct() {
-        let { data } = await axios.get(`https://route-ecommerce.onrender.com/api/v1/products/${id}`);
+        let { data } = await axios.get(`https://route-ecommerce-app.vercel.app/api/v1/products/${id}`);
         setProduct(data.data);
-        console.log(data.data);
         setIsLoading(false);
     }
 
     async function generateCart(productId) {
-
         let response = await createCart(productId);
-        console.log(response, 'from featured component');
-
-        if (response.message == 'error' || response.message == "Network Error") {
-            toast.error('Failed to add product', {
-                position: 'top-right',
-                className: "text-center text-white bg-danger border-2 box-shadow"
-            });
-        } else if (response.data.status === 'success') {
+        if (response?.data?.status === 'success') {
             toast.success(response.data.message, {
                 position: 'top-right',
                 className: "text-center border-success border-2 box-shadow"
             });
+        } else if (response.message == 'error' || response.message == "Network Error") {
+            toast.error('Failed to add product', {
+                position: 'top-right',
+                className: "text-center text-white bg-danger border-2 box-shadow"
+            });
         }
-
-
     }
+
+
     useEffect(() => {
         getProduct();
     }, []);
@@ -59,7 +53,7 @@ export default function ProductDetails() {
                 {isLoading ? <Loading /> : <div className="row align-items-center my-5">
                     <div className="col-md-4">
                         <Slider {...settings}>
-                            {product?.images?.map((img) => <div key={product.id}>
+                            {product?.images?.map((img) => <div key={product._id}>
                                 <img className='w-100' src={img} alt="" />
                             </div>)}
                         </Slider>
@@ -76,12 +70,12 @@ export default function ProductDetails() {
                                 {product.ratingsAverage}
                             </div>
                         </div>
-                        <button onClick={() => generateCart(product._id)} className='btn bg-main text-white w-100'>+ Add</button>
+                        <button onClick={() => { generateCart(product.id); }} className='btn bg-main text-white w-100'>+ Add</button>
                     </div>
                 </div>}
 
 
-            </div>
+            </div >
         </>
     );
 }
