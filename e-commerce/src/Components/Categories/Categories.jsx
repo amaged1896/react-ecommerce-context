@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './Categories.module.css';
 import Slider from "react-slick";
 import axios from 'axios';
 import Loading from '../Loading/Loading';
@@ -9,7 +8,7 @@ export default function Categories() {
     const [isLoading, setIsLoading] = useState(true);
 
     async function getCategories() {
-        let { data } = await axios.get('https://route-ecommerce.onrender.com/api/v1/categories');
+        let { data } = await axios.get('https://route-ecommerce-app.vercel.app/api/v1/categories');
         setCategories(data.data);
         console.log(data.data);
         setIsLoading(false);

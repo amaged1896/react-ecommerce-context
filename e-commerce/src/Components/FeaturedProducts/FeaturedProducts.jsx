@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './FeaturedProducts.module.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
@@ -8,11 +7,11 @@ import toast from 'react-hot-toast';
 
 export default function FeaturedProducts() {
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    let { createCart } = useContext(CartContext);
+
+    let { isLoading, setIsLoading, createCart } = useContext(CartContext);
 
     async function getProducts(productId) {
-        let { data } = await axios.get('https://route-ecommerce.onrender.com/api/v1/products');
+        let { data } = await axios.get('https://route-ecommerce-app.vercel.app/api/v1/products');
         setProducts(data.data);
         console.log(data.data);
         setIsLoading(false);
@@ -50,7 +49,7 @@ export default function FeaturedProducts() {
 
                                 <div className="product px-2 py-3">
                                     <Link to={`/product-details/${product.id}`}>
-                                        <img className='w-100' src={product.imageCover} alt="" />
+                                        <img loading='lazy' className='w-100' src={product.imageCover} alt="" />
                                         <p className='text-main'>{product.category.name}</p>
                                         <h3 className='h6'>{product.title.split(' ').splice(0, 2).join(' ')}</h3>
                                         <div className="d-flex justify-content-between">
