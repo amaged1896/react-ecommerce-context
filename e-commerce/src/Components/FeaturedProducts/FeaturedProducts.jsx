@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 export default function FeaturedProducts() {
     const [products, setProducts] = useState([]);
 
-    let { isLoading, setIsLoading, createCart } = useContext(CartContext);
+    let { isLoading, setIsLoading, createCart, setNumOfCartItems } = useContext(CartContext);
 
     async function getProducts(productId) {
         let { data } = await axios.get('https://route-ecommerce-app.vercel.app/api/v1/products');
@@ -32,6 +32,7 @@ export default function FeaturedProducts() {
                 position: 'top-right',
                 className: "text-center border-success border-2 box-shadow"
             });
+            setNumOfCartItems(response.data.numOfCartItems);
         }
     }
 
@@ -45,7 +46,7 @@ export default function FeaturedProducts() {
                 <div className="row">
                     {isLoading ? <Loading /> : <>
                         {products.map((product) => (
-                            <div className=' col-sm-4 col-md-2 ' key={product.id}>
+                            <div className=' col-6 col-md-2 ' key={product.id}>
 
                                 <div className="product px-2 py-3">
                                     <Link to={`/product-details/${product.id}`}>
@@ -53,7 +54,7 @@ export default function FeaturedProducts() {
                                         <p className='text-main'>{product.category.name}</p>
                                         <h3 className='h6'>{product.title.split(' ').splice(0, 2).join(' ')}</h3>
                                         <div className="d-flex justify-content-between">
-                                            <p>{product.price} EGP</p>
+                                            {product.priceAfterDiscount ? <p><s className='text-warning'>{product.price} EGP</s> <br /> {product.priceAfterDiscount} EGP</p> : <p>{product.price} EGP</p>}
                                             <div>
                                                 <i className='fa fa-star rating-color'></i>
                                                 {product.ratingsAverage}
