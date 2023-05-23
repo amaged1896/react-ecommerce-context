@@ -1,16 +1,31 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export let CartContext = createContext(0);
 
 export default function CartContextProvider(props) {
     // https://route-ecommerce-app.vercel.app/
     const [isLoading, setIsLoading] = useState(true);
+    const [numOfCartItems, setNumOfCartItems] = useState(0);
+    const [cartId, setCartId] = useState(null);
 
     let vercel = `https://route-ecommerce-app.vercel.app`;
     let render = `https://route-ecommerce.onrender.com`;
 
     let headers = { token: localStorage.getItem('token') };
+
+    useEffect(() => {
+        getInitialValues();
+    }, [numOfCartItems]);
+
+    async function getInitialValues() {
+        let { data } = await getCart();
+        if (data.status == "success") {
+            setNumOfCartItems(data.numOfCartItems);
+            setCartId(data.data._id);
+        }
+        console.log(data.numOfCartItems, data.data._id, "from context");
+    }
 
     async function createCart(productId) {
         return await axios.post(`https://route-ecommerce.onrender.com/api/v1/cart`, {
@@ -49,9 +64,16 @@ export default function CartContextProvider(props) {
         ).then(res => res).catch(err => err);
     }
 
-    const [cart, setCart] = useState(0);
+    async function generateOnlinePayment(cartId, shippingAddress) {
+        return await axios.post(`${render}/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
+            { shippingAddress: shippingAddress },
+            {
+                headers,
+            }
+        ).then(res => res).catch(err => err);
+    }
 
-    return <CartContext.Provider value={{ cart, getCart, removeCartItem, updateCart, createCart, isLoading, setIsLoading }}>
+    return <CartContext.Provider value={{ cartId, setCartId, numOfCartItems, setNumOfCartItems, getCart, removeCartItem, updateCart, createCart, generateOnlinePayment, isLoading, setIsLoading }}>
         {props.children}
     </CartContext.Provider>;
 }

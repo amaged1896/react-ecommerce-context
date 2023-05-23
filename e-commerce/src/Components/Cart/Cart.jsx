@@ -2,17 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Cart.module.css';
 import { CartContext } from '../../Context/CartContext';
 import Loading from '../Loading/Loading';
+import { Link } from 'react-router-dom';
 
 export default function Cart() {
     const [cartDetails, setCartDetails] = useState({});
-    const [cartEmpty, setCartEmpty] = useState(false);
     const [isCartDetailsLoaded, setIsCartDetailsLoaded] = useState(false);
-    let { updateCart, removeCartItem, getCart, isLoading, setIsLoading } = useContext(CartContext);
+    let { updateCart, removeCartItem, getCart, isLoading, setIsLoading, setNumOfCartItems } = useContext(CartContext);
 
     async function getCartDetails() {
         let response = await getCart();
-        // console.log(response.data.numOfCartItems);
-        setCartEmpty(true);
         setCartDetails(response.data);
         setIsCartDetailsLoaded(true);
         setIsLoading(false);
@@ -22,19 +20,18 @@ export default function Cart() {
         if (count == 0) {
             setIsLoading(true);
             await removeCartItem(id);
-            getCartDetails();
             setIsLoading(false);
         }
         let response = await updateCart(id, count);
-        console.log(response);
         setCartDetails(response.data);
+        setNumOfCartItems(response.data.numOfCartItems);
         setIsLoading(false);
     }
 
     async function removeItemHandler(id) {
         let response = await removeCartItem(id);
-        console.log(response);
         setCartDetails(response.data);
+        setNumOfCartItems(response.data.numOfCartItems);
         setIsLoading(false);
     }
 
@@ -57,9 +54,9 @@ export default function Cart() {
                             <div className="col-md-2">
                                 <img src={product?.product?.imageCover} className="w-100 rounded" alt="" />
                             </div>
-                            <div className="col-md-10 d-flex justify-content-between">
+                            <div className="col-md-10 col-12 d-flex justify-content-between">
                                 <div>
-                                    <h4 className="h6">{product?.product?.title}</h4>
+                                    <h4 className="h6 mt-1">{product?.product?.title}</h4>
                                     <p className="text-main">{product?.price} EGP</p>
                                     <button onClick={() => removeItemHandler(product?.product?._id)} className="btn text-danger">
                                         <i className="fa fa-trash"></i> Remove
@@ -77,9 +74,14 @@ export default function Cart() {
                             </div>
                         </div>
                     ))}
+
+                    <div className='mt-5'>
+                        <button className='btn btn-warning me-2'>Clear</button>
+                        <Link to='checkout' className='btn btn-success'>Proceed To Payment </Link>
+                    </div>
                 </div>
             )}
-
+            {cartDetails === undefined && <div className="d-flex justify-content-center align-items-center my-5"><h1 className='my-5'>Cart Is Empty</h1> </div>}
             {isCartDetailsLoaded && cartDetails?.numOfCartItems === 0 && (
                 <div className="d-flex justify-content-center align-items-center my-5">
                     <h1>Cart Is Empty</h1>
