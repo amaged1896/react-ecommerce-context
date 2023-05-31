@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createHashRouter, } from 'react-router-dom';
 import Layout from './Components/Layout/Layout';
 import Home from './Components/Home/Home';
 import NotFound from './Components/NotFound/NotFound';
@@ -34,7 +34,7 @@ function App() {
     setUserData(decoded);
   }
 
-  const routes = createBrowserRouter([
+  const routes = createHashRouter([
     {
       path: '', element: <Layout setUserData={setUserData} userData={userData} />, children: [
         { index: true, element: <ProtectedRoutes><Home /> </ProtectedRoutes> },
