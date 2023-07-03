@@ -8,7 +8,7 @@
   --font-family: "Encode Sans Expanded", sans-serif;
   --rating-color: #ffc908;
 }
-
+/*  */
 .border-none :focus-visible {
   outline: none !important;
 }
