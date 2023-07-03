@@ -9,6 +9,9 @@
   --rating-color: #ffc908;
 }
 
+.border-none :focus-visible {
+  outline: none !important;
+}
 body {
   font-family: var(--font-family) !important;
   overflow-x: hidden;

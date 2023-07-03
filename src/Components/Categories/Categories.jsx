@@ -10,7 +10,7 @@ export default function Categories() {
     async function getCategories() {
         let { data } = await axios.get('https://route-ecommerce-app.vercel.app/api/v1/categories');
         setCategories(data.data);
-        console.log(data.data);
+        // console.log(data.data);
         setIsLoading(false);
     }
 
@@ -19,11 +19,11 @@ export default function Categories() {
 
     }, []);
     let settings = {
-        dots: true,
+        // dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: 4,
+        slidesToScroll: 4,
         autoplay: true
     };
     return (
@@ -31,8 +31,8 @@ export default function Categories() {
         <>
             {isLoading ? <Loading /> :
                 <>
-                    <Slider {...settings}>
-                        {categories.map((category) => <div key={category._id}>
+                    <Slider {...settings} className='border-none'>
+                        {categories.map((category) => <div className='col-4' key={category._id}>
                             <img height={300} width={'100%'} src={category.image} alt="" />
                             <h3 className='h6 text-center'>{category.name}</h3>
                         </div>)}

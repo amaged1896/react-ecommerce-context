@@ -10,7 +10,7 @@ import slide3 from "./../../assets/images/slider-2.jpeg";
 
 export default function MainSlider() {
     let settings = {
-        dots: true,
+        // dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 1,

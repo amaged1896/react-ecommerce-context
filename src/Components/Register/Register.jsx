@@ -8,7 +8,7 @@ export default function Register() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     async function register(values) {
-        console.log(values);
+        // console.log(values);
         setIsLoading(true);
         setError(null);
         let { data } = await axios.post('https://route-ecommerce-app.vercel.app/api/v1/auth/signup', values).catch((error) => {

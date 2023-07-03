@@ -13,7 +13,7 @@ export default function FeaturedProducts() {
 
     async function getProducts() {
         let { data } = await getAllProducts();
-        console.log(data.data);
+        // console.log(data.data);
         setProducts(data.data);
         setIsLoading(false);
     }
@@ -21,7 +21,7 @@ export default function FeaturedProducts() {
     async function generateCart(productId) {
 
         let response = await createCart(productId);
-        console.log(response, 'from featured component');
+        // console.log(response, 'from featured component');
 
         if (response.message == 'error' || response.message == "Network Error") {
             toast.error('Failed to add product', {
