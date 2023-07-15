@@ -64,7 +64,7 @@ export default function CartContextProvider(props) {
     }
 
     async function generateOnlinePayment(cartId, shippingAddress) {
-        return await axios.post(`${baseUrl}/api/v1/orders/checkout-session/${cartId}?url=${baseUrl}`,
+        return await axios.post(`${baseUrl}/api/v1/orders/checkout-session/${cartId}?url=https://amaged1896.github.io/react-ecommerce-context`,
             { shippingAddress: shippingAddress },
             {
                 headers,
