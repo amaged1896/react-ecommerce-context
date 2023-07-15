@@ -23,6 +23,7 @@ export default function CartContextProvider(props) {
             setNumOfCartItems(data.numOfCartItems);
             setCartId(data.data._id);
         }
+        // console.log(data.numOfCartItems, data.data._id, "from context");
     }
 
     async function createCart(productId) {
@@ -63,7 +64,7 @@ export default function CartContextProvider(props) {
     }
 
     async function generateOnlinePayment(cartId, shippingAddress) {
-        return await axios.post(`${baseUrl}/api/v1/orders/checkout-session/${cartId}?url=https://amaged1896.github.io/react-ecommerce-context//allorders`,
+        return await axios.post(`${baseUrl}/api/v1/orders/checkout-session/${cartId}?url=${baseUrl}`,
             { shippingAddress: shippingAddress },
             {
                 headers,
