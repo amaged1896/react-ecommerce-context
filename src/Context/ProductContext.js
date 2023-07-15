@@ -4,12 +4,11 @@ export let ProductContext = createContext(null);
 
 export default function ProductContextProvider(props) {
 
-    let vercel = `https://route-ecommerce-app.vercel.app`;
-    let render = `https://route-ecommerce.onrender.com`;
+    let baseUrl = `https://ecommerce.routemisr.com`;
 
 
     async function getAllProducts() {
-        return await axios.get('https://route-ecommerce-app.vercel.app/api/v1/products');
+        return await axios.get(`${baseUrl}/api/v1/products`);
     }
 
     return <ProductContext.Provider value={{ getAllProducts }}>

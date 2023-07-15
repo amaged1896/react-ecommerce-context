@@ -9,18 +9,15 @@ export default function Login({ saveUser }) {
     const [error, setError] = useState(null);
 
     async function login(values) {
-        // console.log(values);
         setIsLoading(true);
         setError(null);
-        let { data } = await axios.post('https://route-ecommerce-app.vercel.app/api/v1/auth/signin', values).catch((error) => {
+        let { data } = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values).catch((error) => {
             // error
             setError(error.response.data.message);
             setIsLoading(false);
-            // console.log(data);
         });
 
         if (data.message === 'success') {
-            // console.log(data);
             // navigate to login page
             setIsLoading(false);
             localStorage.setItem('token', data.token);

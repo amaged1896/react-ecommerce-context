@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, createHashRouter, } from 'react-router-dom';
+import { RouterProvider, createHashRouter, } from 'react-router-dom';
 import Layout from './Components/Layout/Layout';
 import Home from './Components/Home/Home';
 import NotFound from './Components/NotFound/NotFound';
@@ -30,7 +30,6 @@ function App() {
     // decode token
     let decoded = jwtDecode(encodedToken);
     // save user token
-    // console.log(decoded);
     setUserData(decoded);
   }
 

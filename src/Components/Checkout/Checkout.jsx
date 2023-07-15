@@ -6,11 +6,8 @@ export default function Checkout() {
     let { generateOnlinePayment, cartId } = useContext(CartContext);
 
     async function handlePayment(values) {
-        // console.log(values);
         let { data } = await generateOnlinePayment(cartId, values);
-        // console.log(data);
         if (data.session) {
-            // console.log(data.session.url);
             window.location.href = data.session.url;
         }
     }

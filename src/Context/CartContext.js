@@ -9,8 +9,7 @@ export default function CartContextProvider(props) {
     const [numOfCartItems, setNumOfCartItems] = useState(0);
     const [cartId, setCartId] = useState(null);
 
-    let vercel = `https://route-ecommerce-app.vercel.app`;
-    let render = `https://route-ecommerce.onrender.com`;
+    let baseUrl = `https://ecommerce.routemisr.com`;
 
     let headers = { token: localStorage.getItem('token') };
 
@@ -24,11 +23,10 @@ export default function CartContextProvider(props) {
             setNumOfCartItems(data.numOfCartItems);
             setCartId(data.data._id);
         }
-        // console.log(data.numOfCartItems, data.data._id, "from context");
     }
 
     async function createCart(productId) {
-        return await axios.post(`https://route-ecommerce.onrender.com/api/v1/cart`, {
+        return await axios.post(`https://ecommerce.routemisr.com/api/v1/cart`, {
             productId
         },
             {
@@ -40,7 +38,7 @@ export default function CartContextProvider(props) {
     }
 
     async function getCart() {
-        return await axios.get(`${render}/api/v1/cart`, {
+        return await axios.get(`${baseUrl}/api/v1/cart`, {
             headers: { token: localStorage.getItem('token') }
         }
         ).then(res => res).catch(err => err);
@@ -48,7 +46,7 @@ export default function CartContextProvider(props) {
 
     async function updateCart(id, count) {
 
-        return await axios.put(`${render}/api/v1/cart/${id}`, { count },
+        return await axios.put(`${baseUrl}/api/v1/cart/${id}`, { count },
             {
                 headers,
             }
@@ -57,7 +55,7 @@ export default function CartContextProvider(props) {
     }
 
     async function removeCartItem(id) {
-        return await axios.delete(`${render}/api/v1/cart/${id}`,
+        return await axios.delete(`${baseUrl}/api/v1/cart/${id}`,
             {
                 headers,
             }
@@ -65,7 +63,7 @@ export default function CartContextProvider(props) {
     }
 
     async function generateOnlinePayment(cartId, shippingAddress) {
-        return await axios.post(`${render}/api/v1/orders/checkout-session/${cartId}?url=https://amaged1896.github.io/react-ecommerce-context/allorders`,
+        return await axios.post(`${baseUrl}/api/v1/orders/checkout-session/${cartId}?url=https://amaged1896.github.io/react-ecommerce-context//allorders`,
             { shippingAddress: shippingAddress },
             {
                 headers,
